@@ -12,15 +12,12 @@ def apply_wavelet_transform(pyg_graphs, wavelet, level):
     transformed_graphs = []
     
     for data in pyg_graphs:
-        x = data.x.numpy()  # 将节点特征从PyTorch Tensor转换为NumPy array
+        x = data.x.numpy()  
         
-        # 对每个节点的BOLD信号进行小波变换
         transformed_x = np.array([wavelet_transform(signal, wavelet, level) for signal in x])
         
-        # 将变换后的特征转换回PyTorch Tensor
         transformed_x = torch.tensor(transformed_x, dtype=torch.float)
         
-        # 创建新的Data对象
         new_data = data.clone()
         new_data.x = transformed_x
         
@@ -29,7 +26,6 @@ def apply_wavelet_transform(pyg_graphs, wavelet, level):
     return transformed_graphs
 
 
-# 假设 pyg_graphs 是你的图数据列表
 transformed_pyg_graphs_level1 = apply_wavelet_transform(pyg_graphs, wavelet='db1', level=2)
 
 transformed_pyg_graphs_level2 = apply_wavelet_transform(pyg_graphs, wavelet='db1', level=1)
